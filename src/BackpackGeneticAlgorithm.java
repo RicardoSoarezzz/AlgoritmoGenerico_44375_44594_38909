@@ -47,7 +47,7 @@ public class BackpackGeneticAlgorithm {
         Chromosome bestSolution = getBestSolution(population);
 
         System.out.println("\nSolution in an array of booleans: ");
-        System.out.println(Arrays.toString(bestSolution.genes));
+        System.out.println(bestSolution);
         return getSelectedObjects(bestSolution);
     }
 

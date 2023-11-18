@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * The Chromosome class represents a solution to the backpack problem.
  * It contains a set of genes (booleans) representing the selection of objects
@@ -29,5 +31,18 @@ public class Chromosome {
         fitness = 0;
     }
 
-
+    @Override
+    public String toString() {
+        String string = "[";
+        for(int i = 0; i<genes.length;i++){
+            if(genes[i]==true){
+                string += "1, ";
+            }else {
+                string += "0, ";
+            }
+        }
+        string = string.substring(0, string.length() - 2);
+        string +="]";
+        return string;
+    }
 }
