@@ -21,10 +21,12 @@ public class Main {
         objects.add(new Object(15, 45, 9, 12));
         objects.add(new Object(16, 35, 16, 14));
 
+
         BackpackGeneticAlgorithm geneticAlgorithm = new BackpackGeneticAlgorithm(objects);
         List<Object> solution = geneticAlgorithm.solve();
 
-        System.out.println("\nSolution as Objects in the Backpack:");
+
+
         String objectsString = "Objects: ";
         int pesoMax = 0, volMax = 0, valMax = 0;
         for (Object selectedObject : solution) {
@@ -36,7 +38,6 @@ public class Main {
 
         objectsString = objectsString.substring(0, objectsString.length() - 2);
         System.out.println(objectsString);
-
 
         System.out.println("\nBackpack: ");
         System.out.println("    Weight: " + pesoMax);
