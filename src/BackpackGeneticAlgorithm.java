@@ -1,11 +1,11 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class BackpackGeneticAlgorithm {
     private static final int POPULATION_SIZE = 10000;
     static final double MUTATION_RATE = 0.005;
+    private static final int MAX_GENERATIONS = 10;
     private static final int MAX_WEIGHT = 100;
     private static final int MAX_VOLUME = 50;
 
@@ -25,19 +25,21 @@ public class BackpackGeneticAlgorithm {
     public List<Object> solve() {
         List<Chromosome> population = initializePopulation();
 
-        List<Chromosome> newPopulation = new ArrayList<>();
+        for (int generation = 0; generation < MAX_GENERATIONS; generation++) {
+            evaluatePopulation(population);
+            List<Chromosome> newPopulation = new ArrayList<>();
 
-        while (newPopulation.size() < POPULATION_SIZE) {
-            Chromosome parent1 = selectParent(population);
-            Chromosome parent2 = selectParent(population);
+            while (newPopulation.size() < POPULATION_SIZE) {
+                Chromosome parent1 = selectParent(population);
+                Chromosome parent2 = selectParent(population);
 
-            Chromosome child = crossover(parent1, parent2);
-            mutate(child);
+                Chromosome child = crossover(parent1, parent2);
+                mutate(child);
 
-            newPopulation.add(child);
+                newPopulation.add(child);
+            }
+            population = newPopulation;
         }
-
-        population = newPopulation;
 
         evaluatePopulation(population);
 
@@ -52,6 +54,7 @@ public class BackpackGeneticAlgorithm {
         System.out.println("________________________________________________\nBest chromosome\n"+bestSolution);
         return getSelectedObjects(bestSolution);
     }
+
 
 
     private List<Chromosome> initializePopulation() {

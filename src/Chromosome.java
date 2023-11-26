@@ -19,6 +19,8 @@ public class Chromosome {
      */
     int fitness;
 
+    double survivalProbability;
+
     int counter;
     /**
      * Constructor for creating a Chromosome with the specified size.
