@@ -1,14 +1,11 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class BackpackGeneticAlgorithm {
-    private static final int POPULATION_SIZE = 10000;
-    static final double MUTATION_RATE = 0.005;
-    private static final int MAX_GENERATIONS = 10;
+    private static final int POPULATION_SIZE = 16;
+    private static final int MAX_GENERATIONS = 10000;
+    static final double MUTATION_RATE = 0.01;
     private static final int MAX_WEIGHT = 100;
     private static final int MAX_VOLUME = 50;
-
     private final List<Object> objects;
 
     public BackpackGeneticAlgorithm(List<Object> objects) {
@@ -27,34 +24,48 @@ public class BackpackGeneticAlgorithm {
 
         for (int generation = 0; generation < MAX_GENERATIONS; generation++) {
             evaluatePopulation(population);
+
             List<Chromosome> newPopulation = new ArrayList<>();
 
+            //Os 2 melhores da geração anterior passam para
+            // a seguinte, os restantes são ignorados
+            population.sort(Collections.reverseOrder());
+            for(int y = 0; y< 2;y++){
+                newPopulation.add(population.get(y));
+            }
+
+
             while (newPopulation.size() < POPULATION_SIZE) {
-                Chromosome parent1 = selectParent(population);
-                Chromosome parent2 = selectParent(population);
+                Chromosome parent1 = selectParent(newPopulation);
+                Chromosome parent2 = selectParent(newPopulation);
+
+                //impede que os pais sejam o mesmo cromossoma
+                while (parent1 == parent2){
+                    parent2 = selectParent(newPopulation);
+                }
 
                 Chromosome child = crossover(parent1, parent2);
                 mutate(child);
-
                 newPopulation.add(child);
             }
+
+
+            evaluatePopulation(newPopulation);
             population = newPopulation;
         }
 
-        evaluatePopulation(population);
 
         Chromosome bestSolution = getBestSolution(population);
         System.out.println("Population:\n");
 
         int counter = 1;
         for(Chromosome pop : population){
-            System.out.println(counter++ +" - " + pop);
+            System.out.println(counter++ +" - " + pop+ " - Fitness: "+ pop.fitness);
 
         }
         System.out.println("________________________________________________\nBest chromosome\n"+bestSolution);
         return getSelectedObjects(bestSolution);
     }
-
 
 
     private List<Chromosome> initializePopulation() {
@@ -94,17 +105,24 @@ public class BackpackGeneticAlgorithm {
     }
 
     private Chromosome selectParent(List<Chromosome> population) {
-        int index1 = new Random().nextInt(population.size());
+        int index = new Random().nextInt(population.size());
 
-        return  population.get(index1) ;
+        return  population.get(index) ;
     }
 
     private Chromosome crossover(Chromosome parent1, Chromosome parent2) {
+
+        int firstParent = new Random().nextInt(2);
+        int crossPoint = new Random().nextInt(16);
         Chromosome child = new Chromosome(parent1.genes.length);
 
-        int crossoverPoint = new Random().nextInt(parent1.genes.length);
-        System.arraycopy(parent1.genes, 0, child.genes, 0, crossoverPoint);
-        System.arraycopy(parent2.genes, crossoverPoint, child.genes, crossoverPoint, parent2.genes.length - crossoverPoint);
+        if(firstParent==1){
+            System.arraycopy(parent2.genes,0,child.genes,0,crossPoint);
+            System.arraycopy(parent1.genes,crossPoint,child.genes,crossPoint,parent1.genes.length- crossPoint);
+        }else {
+            System.arraycopy(parent1.genes,0,child.genes,0,crossPoint);
+            System.arraycopy(parent2.genes,crossPoint,child.genes,crossPoint,parent2.genes.length- crossPoint);
+        }
 
         return child;
     }

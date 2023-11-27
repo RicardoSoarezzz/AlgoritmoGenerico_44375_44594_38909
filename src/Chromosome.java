@@ -7,7 +7,7 @@
  * @author Miguel Moreira - 44594
  * @author Manuel Brandão - 38909
  */
-public class Chromosome {
+public class Chromosome implements Comparable<Chromosome>{
 
     /**
      * The array of genes representing the selection of objects.
@@ -19,7 +19,6 @@ public class Chromosome {
      */
     int fitness;
 
-    double survivalProbability;
 
     int counter;
     /**
@@ -32,6 +31,13 @@ public class Chromosome {
         fitness = 0;
         counter++;
 
+    }
+
+    @Override
+    public int compareTo(Chromosome other) {
+        // Implement comparison logic based on your criteria
+        // Return a negative value if this < other, 0 if they are equal, and a positive value if this > other
+        return Integer.compare(this.fitness, other.fitness);
     }
 
     @Override
