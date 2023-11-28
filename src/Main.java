@@ -1,3 +1,13 @@
+/**
+ * The Main class represents the entry point for the backpack problem solution.
+ * It creates a list of objects, initializes a genetic algorithm,
+ * and prints the selected objects in the optimal solution.
+ *
+ * @author Ricardo Soares - 44375
+ * @author Miguel Moreira - 44594
+ * @author Manuel Brandão - 38909
+ */
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +37,7 @@ public class Main {
 
 
 
+
         String objectsString = "Objects: ";
         int pesoMax = 0, volMax = 0, valMax = 0;
         for (Object selectedObject : solution) {
@@ -35,14 +46,21 @@ public class Main {
             valMax += selectedObject.value;
             objectsString += selectedObject.number + ", ";
         }
+        if(pesoMax>100 || volMax >50){
+            // Raro mas pode aconteçer
+            System.out.println("No ideal chromosome found");
+        }else {
+            objectsString = objectsString.substring(0, objectsString.length() - 2);
+            System.out.println(objectsString);
 
-        objectsString = objectsString.substring(0, objectsString.length() - 2);
-        System.out.println(objectsString);
+            System.out.println("\nBackpack: ");
+            System.out.println("    Weight: " + pesoMax);
+            System.out.println("    Volume: " + volMax);
+            System.out.println("    Value: " + valMax);
+        }
 
-        System.out.println("\nBackpack: ");
-        System.out.println("    Weight: " + pesoMax);
-        System.out.println("    Volume: " + volMax);
-        System.out.println("    Value: " + valMax);
+
+
 
 
     }

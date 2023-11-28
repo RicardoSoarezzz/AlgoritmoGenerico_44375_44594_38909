@@ -1,3 +1,12 @@
+/**
+ * The BackpackGeneticAlgorithm class represents a genetic algorithm for solving the backpack problem.
+ * It uses a population of chromosomes to evolve a solution over multiple generations.
+ *
+ * @author Ricardo Soares - 44375
+ * @author Miguel Moreira - 44594
+ * @author Manuel Brandão - 38909
+ */
+
 import java.util.*;
 
 public class BackpackGeneticAlgorithm {
@@ -25,15 +34,20 @@ public class BackpackGeneticAlgorithm {
         for (int generation = 0; generation < MAX_GENERATIONS; generation++) {
             evaluatePopulation(population);
 
-            List<Chromosome> newPopulation = new ArrayList<>();
 
             //Os 2 melhores da geração anterior passam para
             // a seguinte, os restantes são ignorados
+            // Caso os 2 melhores tenham a mesma 'fitness'
+            // passa o melhor e o segyndo melhor
             population.sort(Collections.reverseOrder());
-            for(int y = 0; y< 2;y++){
-                newPopulation.add(population.get(y));
-            }
 
+            List<Chromosome> newPopulation = new ArrayList<>();
+            newPopulation.add(population.get(0));
+            int x = 1;
+            while (population.get(x).fitness == population.get(0).fitness && x<POPULATION_SIZE-1){
+                x++;
+            }
+            newPopulation.add(population.get(x));
 
             while (newPopulation.size() < POPULATION_SIZE) {
                 Chromosome parent1 = selectParent(newPopulation);
@@ -50,13 +64,13 @@ public class BackpackGeneticAlgorithm {
             }
 
 
-            evaluatePopulation(newPopulation);
             population = newPopulation;
         }
 
+        evaluatePopulation(population);
 
         Chromosome bestSolution = getBestSolution(population);
-        System.out.println("Population:\n");
+        System.out.println("10000 Generations of 16 chromosomes\n\nLast Population with 16 chromosomes:");
 
         int counter = 1;
         for(Chromosome pop : population){
